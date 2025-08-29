@@ -329,7 +329,7 @@
     let prevBtn = document.getElementById("prevBtn");
 
     // MAPA DOMICILIO
-    let map = L.map('map').setView([14.0723, -87.1921], 12);
+    let map = L.map('map').setView([16.3, -86.55], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     let markerDomicilio;
     map.on('click', function(e) {
@@ -339,7 +339,7 @@
     });
 
     // MAPA TRABAJO
-    let mapTrabajo = L.map('mapTrabajo').setView([14.0723, -87.1921], 12);
+    let mapTrabajo = L.map('mapTrabajo').setView([16.3, -86.55], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapTrabajo);
     let markerTrabajo;
     mapTrabajo.on('click', function(e) {
@@ -436,4 +436,5 @@
 
 </body>
 </html>
+
 
