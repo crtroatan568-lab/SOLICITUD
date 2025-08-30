@@ -264,15 +264,16 @@
         <input type="text" name="Nacionalidad" required>
       </div>
 
-      <!-- PASO 2 -->
-      <div class="step">
-        <label>Fecha de Nacimiento:</label>
-        <input type="date" name="Fecha de Nacimiento" required>
-        <label>Edad:</label>
-        <input type="number" name="Edad" required min="0">
-        <label>No. de Dependientes:</label>
-        <input type="number" name="Dependientes" required min="0">
-      </div>
+     <div class="step">
+  <label>Fecha de Nacimiento:</label>
+  <input type="date" name="Fecha de Nacimiento" id="fechaNacimiento" required>
+
+  <label>Edad:</label>
+  <input type="number" name="Edad" id="edad" required min="0" readonly>
+
+  <label>No. de Dependientes:</label>
+  <input type="number" name="Dependientes" required min="0">
+</div>
 
       <!-- PASO 3 -->
       <div class="step">
@@ -603,7 +604,20 @@
           }, 1500);
         });
     }
+    // Escuchar cambios en la fecha de nacimiento
+  document.getElementById("fechaNacimiento").addEventListener("change", function() {
+    const fechaNac = new Date(this.value);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    // Ajuste si aún no cumplió años este año
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+
+    document.getElementById("edad").value = edad >= 0 ? edad : "";
+  });
   </script>
 </body>
 </html>
-
