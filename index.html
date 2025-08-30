@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitud de Crédito </title>
+  <title>Solicitud de Crédito</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
     /* === RESET === */
@@ -136,13 +136,47 @@
       color: #1877f2;
     }
 
-    /* Animación entrada */
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.98); }
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* === RESPONSIVE === */
+    /* Loading Screen Styles */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #1877f2;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-right: 15px;
+    }
+
+    .loading-text {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 600px) {
       .form-container { padding: 20px 15px; }
       h2 { font-size: 20px; }
@@ -150,25 +184,29 @@
       input, select { font-size: 13px; padding: 10px; }
       .btn { font-size: 14px; padding: 10px; }
       #map, #mapTrabajo { height: 180px; }
+      .loading-text { font-size: 16px; }
     }
   </style>
 </head>
 <body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <span class="loading-text">Cargando...</span>
+  </div>
 
   <div class="form-container">
     <h2>Solicitud de Crédito</h2><br/>
-    <h2>Asesor : Miguel Romero</h2>
+    <h2>Asesor: Miguel Romero</h2>
     <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
     <form id="creditoForm">
-      <!-- === PASOS === -->
+      <!-- PASOS -->
       <div class="step active">
         <label>Nombre:</label>
         <input type="text" name="Nombre" required>
-
         <label>No. de Identidad:</label>
         <input type="text" name="Identidad" required>
-
         <label>Nacionalidad:</label>
         <input type="text" name="Nacionalidad" required>
       </div>
@@ -176,10 +214,8 @@
       <div class="step">
         <label>Fecha de Nacimiento:</label>
         <input type="date" name="Fecha de Nacimiento" required>
-
         <label>Edad:</label>
         <input type="number" name="Edad" required>
-
         <label>No. de Dependientes:</label>
         <input type="number" name="Dependientes" required>
       </div>
@@ -194,10 +230,8 @@
           <option value="Divorciado">Divorciado</option>
           <option value="Viudo">Viudo</option>
         </select>
-
         <label>Profesión u Oficio:</label>
         <input type="text" name="Profesión" required>
-
         <label>Se dedica a:</label>
         <input type="text" name="Ocupación" required>
       </div>
@@ -205,10 +239,8 @@
       <div class="step">
         <label>Correo Electrónico:</label>
         <input type="email" name="Correo" required>
-
         <label>Domicilio:</label>
         <input type="text" name="Domicilio" required>
-
         <label>Vive en casa:</label>
         <select name="Tipo Vivienda" required>
           <option value="">Seleccione</option>
@@ -222,10 +254,8 @@
       <div class="step">
         <label>Tiempo de residir:</label>
         <input type="text" name="Tiempo Residencia" required>
-
         <label>Teléfono de Domicilio:</label>
         <input type="text" name="Teléfono Domicilio" required>
-
         <label>Celular:</label>
         <input type="text" name="Celular" required>
       </div>
@@ -314,8 +344,8 @@
 
       <!-- BOTONES -->
       <div class="btns">
-        <button type="button" class="btn btn-secondary hidden" id="prevBtn" onclick="nextPrev(-1)">Atrás</button>
-        <button type="button" class="btn btn-primary hidden" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)">Atrás</button>
+        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
       </div>
     </form>
   </div>
@@ -327,6 +357,17 @@
     let progressBar = document.getElementById("progressBar");
     let nextBtn = document.getElementById("nextBtn");
     let prevBtn = document.getElementById("prevBtn");
+    let loadingOverlay = document.getElementById("loadingOverlay");
+
+    // Show loading screen on page load
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        loadingOverlay.style.opacity = '0';
+        setTimeout(() => {
+          loadingOverlay.style.display = 'none';
+        }, 300);
+      }, 1000); // Show loading for 1 second
+    });
 
     // MAPA DOMICILIO
     let map = L.map('map').setView([16.3, -86.55], 12);
@@ -348,27 +389,20 @@
       document.getElementById("trabajoCoords").value = e.latlng.lat + "," + e.latlng.lng;
     });
 
-    // Mostrar pasos
     showStep(currentStep);
     function showStep(n) {
-      steps.forEach((step) => step.classList.remove("active"));
+      steps.forEach(step => step.classList.remove("active"));
       steps[n].classList.add("active");
 
-      // Fix Leaflet map size
-      if (steps[n].querySelector("#map")) {
-        setTimeout(() => { map.invalidateSize(); }, 200);
-      }
-      if (steps[n].querySelector("#mapTrabajo")) {
-        setTimeout(() => { mapTrabajo.invalidateSize(); }, 200);
-      }
+      if (steps[n].querySelector("#map")) setTimeout(() => map.invalidateSize(), 200);
+      if (steps[n].querySelector("#mapTrabajo")) setTimeout(() => mapTrabajo.invalidateSize(), 200);
 
-      prevBtn.classList.toggle("hidden", n === 0);
-      validateInputs();
+      prevBtn.style.display = n === 0 ? "none" : "block";
 
       let progress = ((n + 1) / steps.length) * 100;
       progressBar.style.width = progress + "%";
 
-      nextBtn.innerText = (n === steps.length - 1) ? "Enviar por WhatsApp" : "Siguiente";
+      nextBtn.innerText = n === steps.length - 1 ? "Enviar" : "Siguiente";
     }
 
     function nextPrev(n) {
@@ -376,7 +410,7 @@
       currentStep += n;
 
       if (currentStep >= steps.length) {
-        enviarWhatsApp();
+        enviarForm();
         return;
       }
       showStep(currentStep);
@@ -395,47 +429,42 @@
       return true;
     }
 
-    function validateInputs() {
-      let inputs = steps[currentStep].querySelectorAll("input, select");
-      let allFilled = true;
-      inputs.forEach(input => {
-        if (input.hasAttribute("required") && input.value === "") {
-          allFilled = false;
-        }
-        input.addEventListener("input", validateInputs);
-        input.addEventListener("change", validateInputs);
-      });
-      nextBtn.classList.toggle("hidden", !allFilled);
-    }
-
     function toggleConyuge() {
       let estado = document.getElementById("estadoCivil").value;
       let conyugeStep = document.getElementById("conyugeStep");
-      if (estado === "Casado" || estado === "Union Libre") {
-        conyugeStep.classList.remove("hidden");
-      } else {
-        conyugeStep.classList.add("hidden");
-      }
-      steps = document.querySelectorAll(".step"); // refrescar lista
+      conyugeStep.classList.toggle("hidden", !(estado === "Casado" || estado === "Union Libre"));
+      steps = document.querySelectorAll(".step");
     }
 
-    function enviarWhatsApp() {
+    function enviarForm() {
+      // Show loading screen when submitting
+      loadingOverlay.style.display = 'flex';
+      loadingOverlay.style.opacity = '1';
+      loadingOverlay.querySelector('.loading-text').textContent = 'Enviando datos...';
+
       let form = document.getElementById("creditoForm");
       let data = new FormData(form);
-      let mensaje = "📋 *Solicitud de Crédito*%0A%0A";
-      data.forEach((value, key) => {
-        if (value) {
-          mensaje += `*${key}:* ${value}%0A`;
-        }
-      });
-      let numero = "50489776523";
-      let url = `https://wa.me/${numero}?text=${mensaje}`;
-      window.open(url, "_blank");
+      let queryString = new URLSearchParams(data).toString();
+
+      let scriptURL = "https://script.google.com/macros/s/AKfycbyGEAlE_LqD55sZglUuEJHfUIM3yTMP7WsMBmsOicSGm5IfvR3OXJV142rPBaW-uja6pA/exec";
+
+      fetch(`${scriptURL}?${queryString}`)
+        .then(response => response.text())
+        .then(resp => {
+          // Show "Datos enviados" for 1 second, then reload
+          loadingOverlay.querySelector('.loading-text').textContent = 'Datos enviados';
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch(err => {
+          // Show error message for 1 second, then reload
+          loadingOverlay.querySelector('.loading-text').textContent = `Error al enviar los datos: ${err}`;
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        });
     }
   </script>
-
 </body>
 </html>
-
-
-
