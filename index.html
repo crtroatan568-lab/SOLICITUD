@@ -586,7 +586,7 @@
       let data = new FormData(form);
       let queryString = new URLSearchParams(data).toString();
 
-      let scriptURL = "https://script.google.com/macros/s/AKfycbyGEAlE_LqD55sZglUuEJHfUIM3yTMP7WsMBmsOicSGm5IfvR3OXJV142rPBaW-uja6pA/exec";
+      let scriptURL = "https://script.google.com/macros/s/AKfycbw48oFtRDunqSPqcMKxVpPGyiaGuU4EGlu93W5ikYJNo1jyzHt61Oo6cImPes0e2cn2aQ/exec";
 
       fetch(`${scriptURL}?${queryString}`)
         .then(response => response.text())
@@ -606,3 +606,4 @@
   </script>
 </body>
 </html>
+
