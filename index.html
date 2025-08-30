@@ -10,84 +10,117 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #e6f0fa 0%, #f5f7fa 100%);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 15px;
+      padding: 20px;
     }
 
     .form-container {
-      background: #fff;
-      padding: 25px 20px;
-      border-radius: 12px;
+      background: #ffffff;
+      padding: 30px 25px;
+      border-radius: 16px;
       width: 100%;
-      max-width: 480px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-      animation: fadeIn 0.5s ease;
+      max-width: 520px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      animation: slideUp 0.6s ease-out;
+      position: relative;
+      overflow: hidden;
     }
 
     h2 {
       text-align: center;
-      color: #1877f2;
-      margin-bottom: 15px;
-      font-size: 22px;
+      color: #1a73e8;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
     }
 
     label {
       display: block;
-      margin-top: 12px;
-      font-weight: bold;
+      margin-top: 15px;
+      font-weight: 500;
       font-size: 14px;
-      color: #333;
+      color: #2c3e50;
     }
 
     input, select {
       width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: 1px solid #ccd0d5;
-      font-size: 14px;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      background: #fff;
+      padding: 14px;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #dfe6e9;
+      font-size: 15px;
+      background: #f9fbfc;
+      transition: all 0.3s ease;
     }
 
     input:focus, select:focus {
-      border-color: #1877f2;
+      border-color: #1a73e8;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
+      box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+      background: #fff;
+    }
+
+    .currency-input {
+      position: relative;
+    }
+
+    .currency-input::before {
+      content: 'LPS';
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #636e72;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .currency-input input {
+      padding-left: 50px;
     }
 
     .btn {
-      padding: 12px;
+      padding: 14px;
       border: none;
-      border-radius: 8px;
-      font-size: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
       flex: 1;
+      transform: translateY(0);
     }
 
     .btn-primary {
-      background: #1877f2;
+      background: #1a73e8;
       color: white;
-      font-weight: bold;
     }
-    .btn-primary:hover { background: #145dbf; }
+    .btn-primary:hover {
+      background: #1565c0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26,115,232,0.3);
+    }
 
     .btn-secondary {
-      background: #e4e6eb;
-      color: #050505;
+      background: #eceff1;
+      color: #2c3e50;
     }
-    .btn-secondary:hover { background: #d8dadf; }
+    .btn-secondary:hover {
+      background: #dfe6e9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
     .btns {
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 12px;
+      margin-top: 25px;
     }
 
     .hidden { display: none !important; }
@@ -95,50 +128,61 @@
     .step {
       display: none;
       opacity: 0;
-      transform: translateX(20px);
-      transition: all 0.4s ease;
+      transform: translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .step.active {
       display: block;
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
     }
 
     .progress {
-      height: 8px;
-      background: #ddd;
-      border-radius: 5px;
-      margin-bottom: 20px;
+      height: 10px;
+      background: #eceff1;
+      border-radius: 8px;
+      margin-bottom: 25px;
       overflow: hidden;
+      position: relative;
     }
     .progress-bar {
-      height: 8px;
-      background: #1877f2;
+      height: 100%;
+      background: linear-gradient(90deg, #1a73e8, #4dabf7);
       width: 0%;
-      transition: width 0.4s ease;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #map, #mapTrabajo {
-      height: 220px;
-      margin-top: 10px;
-      border-radius: 8px;
+      height: 240px;
+      margin-top: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     small {
-      color: #666;
+      color: #636e72;
       font-size: 12px;
+      display: block;
+      margin-top: 6px;
     }
 
     h4 {
-      font-size: 15px;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      color: #1877f2;
+      font-size: 16px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: #1a73e8;
+      font-weight: 500;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
     }
 
     /* Loading Screen Styles */
@@ -148,28 +192,30 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.5s ease;
     }
 
     .loading-spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #1877f2;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #1a73e8;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin-right: 15px;
+      width: 50px;
+      height: 50px;
+      animation: spin 0.8s linear infinite;
+      margin-right: 20px;
     }
 
     .loading-text {
       color: white;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      animation: pulse 1.5s infinite;
     }
 
     @keyframes spin {
@@ -177,14 +223,21 @@
       100% { transform: rotate(360deg); }
     }
 
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
     @media (max-width: 600px) {
-      .form-container { padding: 20px 15px; }
-      h2 { font-size: 20px; }
+      .form-container { padding: 25px 20px; }
+      h2 { font-size: 22px; }
       label { font-size: 13px; }
-      input, select { font-size: 13px; padding: 10px; }
-      .btn { font-size: 14px; padding: 10px; }
-      #map, #mapTrabajo { height: 180px; }
-      .loading-text { font-size: 16px; }
+      input, select { font-size: 14px; padding: 12px; }
+      .currency-input::before { font-size: 14px; }
+      .currency-input input { padding-left: 45px; }
+      .btn { font-size: 15px; padding: 12px; }
+      #map, #mapTrabajo { height: 200px; }
+      .loading-text { font-size: 18px; }
     }
   </style>
 </head>
@@ -196,30 +249,32 @@
   </div>
 
   <div class="form-container">
-    <h2>Solicitud de Crédito</h2><br/>
+    <h2>Solicitud de Crédito</h2>
     <h2>Asesor: Miguel Romero</h2>
     <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
     <form id="creditoForm">
-      <!-- PASOS -->
+      <!-- PASO 1 -->
       <div class="step active">
         <label>Nombre:</label>
         <input type="text" name="Nombre" required>
         <label>No. de Identidad:</label>
-        <input type="text" name="Identidad" required>
+        <input type="tel" name="Identidad" required maxlength="15" pattern="\d{4}-\d{4}-\d{5}" placeholder="1234-5678-90123">
         <label>Nacionalidad:</label>
         <input type="text" name="Nacionalidad" required>
       </div>
 
+      <!-- PASO 2 -->
       <div class="step">
         <label>Fecha de Nacimiento:</label>
         <input type="date" name="Fecha de Nacimiento" required>
         <label>Edad:</label>
-        <input type="number" name="Edad" required>
+        <input type="number" name="Edad" required min="0">
         <label>No. de Dependientes:</label>
-        <input type="number" name="Dependientes" required>
+        <input type="number" name="Dependientes" required min="0">
       </div>
 
+      <!-- PASO 3 -->
       <div class="step">
         <label>Estado Civil:</label>
         <select name="Estado Civil" id="estadoCivil" required onchange="toggleConyuge()">
@@ -236,6 +291,7 @@
         <input type="text" name="Ocupación" required>
       </div>
 
+      <!-- PASO 4 -->
       <div class="step">
         <label>Correo Electrónico:</label>
         <input type="email" name="Correo" required>
@@ -251,15 +307,17 @@
         </select>
       </div>
 
+      <!-- PASO 5 -->
       <div class="step">
         <label>Tiempo de residir:</label>
         <input type="text" name="Tiempo Residencia" required>
         <label>Teléfono de Domicilio:</label>
-        <input type="text" name="Teléfono Domicilio" required>
+        <input type="tel" name="Teléfono Domicilio" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
         <label>Celular:</label>
-        <input type="text" name="Celular" required>
+        <input type="tel" name="Celular" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
       </div>
 
+      <!-- PASO 6 -->
       <div class="step">
         <label>Ubicación del Domicilio:</label>
         <small>Haz clic en el mapa para marcar tu domicilio</small>
@@ -267,19 +325,21 @@
         <input type="hidden" name="Ubicación Domicilio" id="domicilioCoords">
       </div>
 
+      <!-- PASO 7 (Cónyuge, condicional) -->
       <div class="step hidden" id="conyugeStep">
         <label>Nombre del Cónyuge:</label>
-        <input type="text" name="Conyuge Nombre">
+        <input type="text" name="Conyuge Nombre" id="conyugeNombre">
         <label>No. de Identidad del Cónyuge:</label>
-        <input type="text" name="Conyuge Identidad">
+        <input type="tel" name="Conyuge Identidad" id="conyugeIdentidad" maxlength="15" pattern="\d{4}-\d{4}-\d{5}" placeholder="1234-5678-90123">
         <label>Lugar de Trabajo:</label>
-        <input type="text" name="Conyuge Trabajo">
+        <input type="text" name="Conyuge Trabajo" id="conyugeTrabajo">
         <label>Cargo:</label>
-        <input type="text" name="Conyuge Cargo">
+        <input type="text" name="Conyuge Cargo" id="conyugeCargo">
         <label>Teléfono de Trabajo:</label>
-        <input type="text" name="Conyuge Teléfono">
+        <input type="tel" name="Conyuge Teléfono" id="conyugeTelefono" maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
       </div>
 
+      <!-- PASO 8 -->
       <div class="step">
         <label>Nombre de la Empresa:</label>
         <input type="text" name="Empresa" required>
@@ -293,24 +353,29 @@
         <input type="text" name="Giro Empresa" required>
       </div>
 
+      <!-- PASO 9 -->
       <div class="step">
         <label>Dirección de la Empresa / Negocio:</label>
         <input type="text" name="Dirección Empresa" required>
         <label>Cargo:</label>
         <input type="text" name="Cargo" required>
-        <label>Departamento / Sección:</label>
+        <label>Departamento / Sección en que labora:</label>
         <input type="text" name="Departamento" required>
       </div>
 
+      <!-- PASO 10 -->
       <div class="step">
         <label>Antigüedad Laboral:</label>
         <input type="text" name="Antigüedad" required>
         <label>Nombre y Cargo Jefe Inmediato:</label>
         <input type="text" name="Jefe Inmediato" required>
         <label>Salario:</label>
-        <input type="text" name="Salario" required>
+        <div class="currency-input">
+          <input type="number" name="Salario" required min="0" step="0.01" placeholder="0.00">
+        </div>
       </div>
 
+      <!-- PASO 11 -->
       <div class="step">
         <label>Ubicación del Trabajo:</label>
         <small>Haz clic en el mapa para marcar tu lugar de trabajo</small>
@@ -318,28 +383,30 @@
         <input type="hidden" name="Ubicación Trabajo" id="trabajoCoords">
       </div>
 
+      <!-- PASO 12 -->
       <div class="step">
         <h4>Referencia Personal 1</h4>
         <input type="text" name="Ref Persona 1 Nombre" placeholder="Nombre" required>
-        <input type="text" name="Ref Persona 1 Tel Casa" placeholder="Tel. Casa" required>
-        <input type="text" name="Ref Persona 1 Tel Trabajo" placeholder="Tel. Trabajo" required>
+        <input type="tel" name="Ref Persona 1 Tel Casa" placeholder="Tel. Casa" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
+        <input type="tel" name="Ref Persona 1 Tel Trabajo" placeholder="Tel. Trabajo" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
         <h4>Referencia Personal 2</h4>
         <input type="text" name="Ref Persona 2 Nombre" placeholder="Nombre" required>
-        <input type="text" name="Ref Persona 2 Tel Casa" placeholder="Tel. Casa" required>
-        <input type="text" name="Ref Persona 2 Tel Trabajo" placeholder="Tel. Trabajo" required>
+        <input type="tel" name="Ref Persona 2 Tel Casa" placeholder="Tel. Casa" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
+        <input type="tel" name="Ref Persona 2 Tel Trabajo" placeholder="Tel. Trabajo" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
       </div>
 
+      <!-- PASO 13 -->
       <div class="step">
         <h4>Referencia Familiar 1</h4>
         <input type="text" name="Ref Familiar 1 Nombre" placeholder="Nombre" required>
         <input type="text" name="Ref Familiar 1 Parentesco" placeholder="Parentesco" required>
-        <input type="text" name="Ref Familiar 1 Tel Casa" placeholder="Tel. Casa" required>
-        <input type="text" name="Ref Familiar 1 Tel Trabajo" placeholder="Tel. Trabajo" required>
+        <input type="tel" name="Ref Familiar 1 Tel Casa" placeholder="Tel. Casa" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
+        <input type="tel" name="Ref Familiar 1 Tel Trabajo" placeholder="Tel. Trabajo" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
         <h4>Referencia Familiar 2</h4>
         <input type="text" name="Ref Familiar 2 Nombre" placeholder="Nombre" required>
         <input type="text" name="Ref Familiar 2 Parentesco" placeholder="Parentesco" required>
-        <input type="text" name="Ref Familiar 2 Tel Casa" placeholder="Tel. Casa" required>
-        <input type="text" name="Ref Familiar 2 Tel Trabajo" placeholder="Tel. Trabajo" required>
+        <input type="tel" name="Ref Familiar 2 Tel Casa" placeholder="Tel. Casa" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
+        <input type="tel" name="Ref Familiar 2 Tel Trabajo" placeholder="Tel. Trabajo" required maxlength="9" pattern="\d{4}-\d{4}" placeholder="1234-5678">
       </div>
 
       <!-- BOTONES -->
@@ -359,14 +426,38 @@
     let prevBtn = document.getElementById("prevBtn");
     let loadingOverlay = document.getElementById("loadingOverlay");
 
+    // Format identity number (1234-5678-90123)
+    function formatIdentity(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 4) value = value.slice(0, 4) + '-' + value.slice(4);
+      if (value.length > 9) value = value.slice(0, 9) + '-' + value.slice(9, 14);
+      input.value = value.slice(0, 15);
+    }
+
+    // Format phone number (1234-5678)
+    function formatPhone(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 4) value = value.slice(0, 4) + '-' + value.slice(4, 8);
+      input.value = value.slice(0, 9);
+    }
+
+    // Apply formatting to identity and phone inputs
+    document.querySelectorAll('input[name="Identidad"], input[name="Conyuge Identidad"]').forEach(input => {
+      input.addEventListener('input', () => formatIdentity(input));
+    });
+
+    document.querySelectorAll('input[name="Teléfono Domicilio"], input[name="Celular"], input[name="Conyuge Teléfono"], input[name$="Tel Casa"], input[name$="Tel Trabajo"]').forEach(input => {
+      input.addEventListener('input', () => formatPhone(input));
+    });
+
     // Show loading screen on page load
     window.addEventListener('load', function() {
       setTimeout(() => {
         loadingOverlay.style.opacity = '0';
         setTimeout(() => {
           loadingOverlay.style.display = 'none';
-        }, 300);
-      }, 1000); // Show loading for 1 second
+        }, 500);
+      }, 1200);
     });
 
     // MAPA DOMICILIO
@@ -418,26 +509,75 @@
 
     function validateForm() {
       let inputs = steps[currentStep].querySelectorAll("input, select");
+      let isValid = true;
+      let estadoCivil = document.getElementById("estadoCivil").value;
+
       for (let input of inputs) {
+        // Skip validation for Cónyuge fields if Estado Civil is Soltero
+        if (estadoCivil === "Soltero" && (
+          input.id === "conyugeNombre" ||
+          input.id === "conyugeIdentidad" ||
+          input.id === "conyugeTrabajo" ||
+          input.id === "conyugeCargo" ||
+          input.id === "conyugeTelefono"
+        )) {
+          continue;
+        }
+
         if (input.hasAttribute("required") && input.value === "") {
-          input.style.borderColor = "red";
-          return false;
+          input.style.borderColor = "#e63946";
+          input.style.animation = "shake 0.3s";
+          setTimeout(() => input.style.animation = "", 300);
+          isValid = false;
+        } else if (input.name === "Identidad" || input.name === "Conyuge Identidad") {
+          if (input.value && !/^\d{4}-\d{4}-\d{5}$/.test(input.value)) {
+            input.style.borderColor = "#e63946";
+            input.style.animation = "shake 0.3s";
+            setTimeout(() => input.style.animation = "", 300);
+            isValid = false;
+          } else {
+            input.style.borderColor = "#dfe6e9";
+          }
+        } else if (input.type === "tel" && input.hasAttribute("required") && input.value) {
+          if (!/^\d{4}-\d{4}$/.test(input.value)) {
+            input.style.borderColor = "#e63946";
+            input.style.animation = "shake 0.3s";
+            setTimeout(() => input.style.animation = "", 300);
+            isValid = false;
+          } else {
+            input.style.borderColor = "#dfe6e9";
+          }
+        } else if (input.name === "Salario" && input.value < 0) {
+          input.style.borderColor = "#e63946";
+          input.style.animation = "shake 0.3s";
+          setTimeout(() => input.style.animation = "", 300);
+          isValid = false;
         } else {
-          input.style.borderColor = "#ccc";
+          input.style.borderColor = "#dfe6e9";
         }
       }
-      return true;
+      return isValid;
     }
 
     function toggleConyuge() {
       let estado = document.getElementById("estadoCivil").value;
       let conyugeStep = document.getElementById("conyugeStep");
+      let conyugeInputs = conyugeStep.querySelectorAll("input");
+
       conyugeStep.classList.toggle("hidden", !(estado === "Casado" || estado === "Union Libre"));
       steps = document.querySelectorAll(".step");
+
+      // Toggle required attribute for Cónyuge fields
+      conyugeInputs.forEach(input => {
+        if (estado === "Casado" || estado === "Union Libre") {
+          input.setAttribute("required", "");
+        } else {
+          input.removeAttribute("required");
+        }
+      });
     }
 
     function enviarForm() {
-      // Show loading screen when submitting
       loadingOverlay.style.display = 'flex';
       loadingOverlay.style.opacity = '1';
       loadingOverlay.querySelector('.loading-text').textContent = 'Enviando datos...';
@@ -451,18 +591,16 @@
       fetch(`${scriptURL}?${queryString}`)
         .then(response => response.text())
         .then(resp => {
-          // Show "Datos enviados" for 1 second, then reload
-          loadingOverlay.querySelector('.loading-text').textContent = 'Datos enviados';
+          loadingOverlay.querySelector('.loading-text').textContent = 'Datos enviados correctamente. El asesor se contactara pronto con su persona';
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 1500);
         })
         .catch(err => {
-          // Show error message for 1 second, then reload
-          loadingOverlay.querySelector('.loading-text').textContent = `Error al enviar los datos: ${err}`;
+          loadingOverlay.querySelector('.loading-text').textContent = `Error: ${err}`;
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 1500);
         });
     }
   </script>
