@@ -847,37 +847,46 @@
         });
       }
 
-      function enviarForm() {
-        loadingOverlay.style.display = "flex";
-        loadingOverlay.style.opacity = "1";
+   
+  function enviarForm() {
+    loadingOverlay.style.display = "flex";
+    loadingOverlay.style.opacity = "1";
+    loadingOverlay.querySelector(".loading-text").textContent =
+      "Enviando datos...";
+
+    let form = document.getElementById("creditoForm");
+    let data = new FormData(form);
+    let queryString = new URLSearchParams(data);
+
+    // ⬇️ Capturar parámetros de la URL (ejemplo: ?usuario=2113)
+    let urlParams = new URLSearchParams(window.location.search);
+    for (let [key, value] of urlParams.entries()) {
+      queryString.append(key, value); // se agregan al envío
+    }
+
+    let scriptURL =
+      "https://script.google.com/macros/s/AKfycbw48oFtRDunqSPqcMKxVpPGyiaGuU4EGlu93W5ikYJNo1jyzHt61Oo6cImPes0e2cn2aQ/exec";
+
+    fetch(`${scriptURL}?${queryString.toString()}`)
+      .then((response) => response.text())
+      .then((resp) => {
         loadingOverlay.querySelector(".loading-text").textContent =
-          "Enviando datos...";
+          "Datos enviados correctamente. El asesor se contactará pronto con su persona";
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      })
+      .catch((err) => {
+        loadingOverlay.querySelector(
+          ".loading-text"
+        ).textContent = `Error: ${err}`;
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      });
+  }
 
-        let form = document.getElementById("creditoForm");
-        let data = new FormData(form);
-        let queryString = new URLSearchParams(data).toString();
 
-        let scriptURL =
-          "https://script.google.com/macros/s/AKfycbw48oFtRDunqSPqcMKxVpPGyiaGuU4EGlu93W5ikYJNo1jyzHt61Oo6cImPes0e2cn2aQ/exec";
-
-        fetch(`${scriptURL}?${queryString}`)
-          .then((response) => response.text())
-          .then((resp) => {
-            loadingOverlay.querySelector(".loading-text").textContent =
-              "Datos enviados correctamente. El asesor se contactara pronto con su persona";
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500);
-          })
-          .catch((err) => {
-            loadingOverlay.querySelector(
-              ".loading-text"
-            ).textContent = `Error: ${err}`;
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500);
-          });
-      }
       // Escuchar cambios en la fecha de nacimiento
       document
         .getElementById("fechaNacimiento")
@@ -897,4 +906,5 @@
     </script>
   </body>
 </html>
+
 
