@@ -329,7 +329,8 @@
 
     <div class="form-container">
   <button id="resetFormBtn" type="button" style="position:fixed;bottom:32px;right:32px;z-index:9999;background:#e63946;color:#fff;border:none;padding:14px 22px;border-radius:30px;font-size:16px;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;">Limpiar e iniciar de nuevo</button>
-      <h2>Solicitud de Crédito</h2>
+      <h2>Solicitud de Crédito</h2> <br/>
+<h3 id="asesorNombre">Asesor:</h3>
      
       <div class="progress">
         <div class="progress-bar" id="progressBar"></div>
@@ -692,6 +693,18 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
+ // Mostrar el nombre del asesor usando el parámetro "name" de la URL
+document.addEventListener("DOMContentLoaded", () => {
+  const h3Asesor = document.getElementById("asesorNombre");
+  const urlParams = new URLSearchParams(window.location.search);
+  const nombreAsesor = urlParams.get("name"); // obtiene ?name=...
+
+  if (nombreAsesor) {
+    h3Asesor.textContent = `Asesor: ${decodeURIComponent(nombreAsesor)}`;
+  }
+});
+
+
       let currentStep = 0;
       let steps = document.querySelectorAll(".step");
       let progressBar = document.getElementById("progressBar");
@@ -945,6 +958,7 @@
     </script>
   </body>
 </html>
+
 
 
 
