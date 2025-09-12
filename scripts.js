@@ -1,5 +1,9 @@
 
     let currentStep = 0;
+    // Recuperar el paso actual desde localStorage si existe
+    if (localStorage.getItem('currentStep')) {
+      currentStep = parseInt(localStorage.getItem('currentStep')) || 0;
+    }
     let steps = document.querySelectorAll(".step");
     let progressBar = document.getElementById("progressBar");
     let nextBtn = document.getElementById("nextBtn");
@@ -42,7 +46,10 @@
 
     // MAPA DOMICILIO
     let map = L.map('map').setView([16.3, -86.55], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles © Esri',
+      maxZoom: 19
+    }).addTo(map);
     let markerDomicilio;
     map.on('click', function(e) {
       if (markerDomicilio) map.removeLayer(markerDomicilio);
@@ -52,7 +59,10 @@
 
     // MAPA TRABAJO
     let mapTrabajo = L.map('mapTrabajo').setView([16.3, -86.55], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapTrabajo);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles © Esri',
+      maxZoom: 19
+    }).addTo(mapTrabajo);
     let markerTrabajo;
     mapTrabajo.on('click', function(e) {
       if (markerTrabajo) mapTrabajo.removeLayer(markerTrabajo);
@@ -62,6 +72,8 @@
 
     showStep(currentStep);
     function showStep(n) {
+      // Guardar el paso actual en localStorage
+      localStorage.setItem('currentStep', n);
       steps.forEach(step => step.classList.remove("active"));
       steps[n].classList.add("active");
 
