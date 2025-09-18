@@ -19,7 +19,8 @@
   <meta name="twitter:description" content="Formulario de actualización de datos.">
   <meta name="twitter:image" content="https://i.imgur.com/6zP8rxG.jpeg">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwQ_-OBFVwLjlzvj95k0NSJweSApAGZbo"></script>
     <style>
       /* === RESET === */
       * {
@@ -691,7 +692,7 @@
       </form>
     </div>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Google Maps reemplaza Leaflet -->
     <script>
  // Mostrar el nombre del asesor usando el parámetro "name" de la URL
 document.addEventListener("DOMContentLoaded", () => {
@@ -756,32 +757,65 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1200);
       });
 
-      // MAPA DOMICILIO
-      let map = L.map("map").setView([16.3, -86.55], 12);
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles © Esri',
-        maxZoom: 19
-      }).addTo(map);
-      let markerDomicilio;
-      map.on("click", function (e) {
-        if (markerDomicilio) map.removeLayer(markerDomicilio);
-        markerDomicilio = L.marker(e.latlng).addTo(map);
-        document.getElementById("domicilioCoords").value =
-          e.latlng.lat + "," + e.latlng.lng;
-      });
 
-      // MAPA TRABAJO
-      let mapTrabajo = L.map("mapTrabajo").setView([16.3, -86.55], 12);
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles © Esri',
-        maxZoom: 19
-      }).addTo(mapTrabajo);
-      let markerTrabajo;
-      mapTrabajo.on("click", function (e) {
-        if (markerTrabajo) mapTrabajo.removeLayer(markerTrabajo);
-        markerTrabajo = L.marker(e.latlng).addTo(mapTrabajo);
-        document.getElementById("trabajoCoords").value =
-          e.latlng.lat + "," + e.latlng.lng;
+      // MAPA DOMICILIO - Google Maps
+      let map, markerDomicilio;
+      function initMapDomicilio() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 16.3, lng: -86.55 },
+          zoom: 12,
+          mapTypeId: "satellite",
+          zoomControl: true,
+          scrollwheel: true,
+          gestureHandling: "auto"
+        });
+        map.addListener("click", function (e) {
+          if (markerDomicilio) markerDomicilio.setMap(null);
+          markerDomicilio = new google.maps.Marker({
+            position: e.latLng,
+            map: map,
+            draggable: true,
+          });
+          document.getElementById("domicilioCoords").value =
+            e.latLng.lat() + "," + e.latLng.lng();
+          markerDomicilio.addListener("dragend", function (evt) {
+            document.getElementById("domicilioCoords").value =
+              evt.latLng.lat() + "," + evt.latLng.lng();
+          });
+        });
+      }
+
+      // MAPA TRABAJO - Google Maps
+      let mapTrabajo, markerTrabajo;
+      function initMapTrabajo() {
+        mapTrabajo = new google.maps.Map(document.getElementById("mapTrabajo"), {
+          center: { lat: 16.3, lng: -86.55 },
+          zoom: 12,
+          mapTypeId: "satellite",
+          zoomControl: true,
+          scrollwheel: true,
+          gestureHandling: "auto"
+        });
+        mapTrabajo.addListener("click", function (e) {
+          if (markerTrabajo) markerTrabajo.setMap(null);
+          markerTrabajo = new google.maps.Marker({
+            position: e.latLng,
+            map: mapTrabajo,
+            draggable: true,
+          });
+          document.getElementById("trabajoCoords").value =
+            e.latLng.lat() + "," + e.latLng.lng();
+          markerTrabajo.addListener("dragend", function (evt) {
+            document.getElementById("trabajoCoords").value =
+              evt.latLng.lat() + "," + evt.latLng.lng();
+          });
+        });
+      }
+
+      // Inicializar ambos mapas cuando el DOM esté listo
+      document.addEventListener("DOMContentLoaded", function () {
+        if (document.getElementById("map")) initMapDomicilio();
+        if (document.getElementById("mapTrabajo")) initMapTrabajo();
       });
 
       showStep(currentStep);
@@ -958,7 +992,6 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
   </body>
 </html>
-
 
 
 
