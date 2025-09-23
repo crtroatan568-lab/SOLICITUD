@@ -7,16 +7,16 @@
      <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="https://i.imgur.com/6zP8rxG.jpeg">
   <!-- Metadatos Open Graph para WhatsApp, Facebook, etc. -->
-  <meta property="og:title" content="Actualización">
-  <meta property="og:description" content="Formulario de actualización de datos.">
+  <meta property="og:title" content="Solicitud de credito">
+  <meta property="og:description" content="Solicitud de credito">
   <meta property="og:image" content="https://i.imgur.com/6zP8rxG.jpeg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tu-sitio.com/tu-formulario.html">
 
   <!-- Opcional para Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Actualización">
-  <meta name="twitter:description" content="Formulario de actualización de datos.">
+  <meta name="twitter:title" content="Solicitud de credito">
+  <meta name="twitter:description" content="Solicitud de credito">
   <meta name="twitter:image" content="https://i.imgur.com/6zP8rxG.jpeg">
 
   <!-- Google Maps API -->
@@ -372,7 +372,7 @@
         <!-- PASO 1 -->
         <div class="step active">
           <label>Tu nombre:</label>
-          <input type="text" name="Nombre" required />
+          <input type="text" name="Nombre"  placeholder="Ejemplo: Juan Perez Bonilla Serrano" required />
           <label>No. de Identidad:</label>
           <input
             type="tel"
@@ -385,27 +385,7 @@
           <label>Nacionalidad:</label>
           <select name="Nacionalidad" required>
             <option value="Hondureña" selected>Hondureña</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Boliviana">Boliviana</option>
-            <option value="Chilena">Chilena</option>
-            <option value="Colombiana">Colombiana</option>
-            <option value="Costarricense">Costarricense</option>
-            <option value="Cubana">Cubana</option>
-            <option value="Dominicana">Dominicana</option>
-            <option value="Ecuatoriana">Ecuatoriana</option>
-            <option value="Salvadoreña">Salvadoreña</option>
-            <option value="Guatemalteca">Guatemalteca</option>
-            <option value="Mexicana">Mexicana</option>
-            <option value="Nicaragüense">Nicaragüense</option>
-            <option value="Panameña">Panameña</option>
-            <option value="Paraguaya">Paraguaya</option>
-            <option value="Peruana">Peruana</option>
-            <option value="Uruguaya">Uruguaya</option>
-            <option value="Venezolana">Venezolana</option>
-            <option value="Española">Española</option>
-            <option value="Estadounidense">Estadounidense</option>
-            <option value="Canadiense">Canadiense</option>
-            <option value="Brasileña">Brasileña</option>
+        
             <option value="Otra">Otra</option>
           </select>
         </div>
@@ -430,7 +410,7 @@
           />
 
           <label>No. de Dependientes:</label>
-          <input type="number" name="Dependientes" required min="0" />
+          <input type="number" name="Dependientes" required min="0"  placeholder="Ejemplo: 1"/>
         </div>
 
         <!-- PASO 3 -->
@@ -441,6 +421,7 @@
             id="estadoCivil"
             required
             onchange="toggleConyuge()"
+             
           >
             <option value="">Seleccione</option>
             <option value="Soltero">Soltero</option>
@@ -449,18 +430,49 @@
             <option value="Divorciado">Divorciado</option>
             <option value="Viudo">Viudo</option>
           </select>
+
+
+
+
+
+       
+
+          <div id="conyugeStep" class="hidden">
+            <label>Nombre del Cónyuge:</label>
+            <input type="text" name="Conyuge Nombre" id="conyugeNombre" placeholder="Ejemplo: Nombre completo de su pareja" />
+            <label>No. de Identidad del Cónyuge:</label>
+            <input
+              type="tel"
+              name="Conyuge Identidad"
+              id="conyugeIdentidad"
+              maxlength="15"
+              pattern="\d{4}-\d{4}-\d{5}"
+              placeholder="Ejemplo  Identidad de su pareja 1234-5678-90123"
+            />
+            <label>Teléfono</label>
+            <input
+              type="tel"
+              name="Conyuge Teléfono"
+              id="conyugeTelefono"
+              maxlength="9"
+              pattern="\d{4}-\d{4}"
+              placeholder="Telefono de su pareja :1234-5678"
+            />
+          </div>
+        
+
           <label>Profesión u Oficio:</label>
-          <input type="text" name="Profesión" required />
+          <input type="text" name="Profesión" placeholder="Ejemplo: Albañil,Abogado,Doctor" required />
           <label>Se dedica a:</label>
-          <input type="text" name="Ocupación" required />
+          <input type="text" name="Ocupación" placeholder="Ejemplo: Construccioon,Ventas,Educar" required />
         </div>
 
         <!-- PASO 4 -->
         <div class="step">
           <label>Correo Electrónico:</label>
-          <input type="email" name="Correo" required />
+          <input type="email" name="Correo" placeholder="Ejemplo: tucorreo@gmail.com o no tengo" required />
           <label>Domicilio:</label>
-          <input type="text" name="Domicilio" required />
+          <input type="text" name="Domicilio" placeholder="Ejemplo: Ceiba, calle 7, 2 cuadra de polperia Nori,  mi casa Colo cafe." required />
           <label>Vive en casa:</label>
           <select name="Tipo Vivienda" required>
             <option value="">Seleccione</option>
@@ -497,7 +509,7 @@
 
         <!-- PASO 6 -->
         <div class="step">
-          <label>Ubicación de tu Domicilio:</label>
+          <label>Ubicación de tu Domicilio: (Favor seleccionar su ubicacion para realizar un croquis)</label>
           <small>Haz clic en el mapa para marcar tu domicilio</small>
           <div id="map"></div>
           <input
@@ -507,38 +519,10 @@
           />
         </div>
 
-        <!-- PASO 7 (Cónyuge, condicional) -->
-        <div class="step hidden" id="conyugeStep">
-          <label>Nombre del Cónyuge:</label>
-          <input type="text" name="Conyuge Nombre" id="conyugeNombre" />
-          <label>No. de Identidad del Cónyuge:</label>
-          <input
-            type="tel"
-            name="Conyuge Identidad"
-            id="conyugeIdentidad"
-            maxlength="15"
-            pattern="\d{4}-\d{4}-\d{5}"
-            placeholder="1234-5678-90123"
-          />
-          <label>Lugar de Trabajo del conyuge:</label>
-          <input type="text" name="Conyuge Trabajo" id="conyugeTrabajo" />
-          <label>Cargo:</label>
-          <input type="text" name="Conyuge Cargo" id="conyugeCargo" />
-          <label>Teléfono</label>
-          <input
-            type="tel"
-            name="Conyuge Teléfono"
-            id="conyugeTelefono"
-            maxlength="9"
-            pattern="\d{4}-\d{4}"
-            placeholder="1234-5678"
-          />
-        </div>
-
         <!-- PASO 8 -->
         <div class="step">
           <label>Nombre de la Empresa:</label>
-          <input type="text" name="Empresa" required />
+          <input type="text" name="Empresa"  placeholder="Ejemplo: Ferreteria 2 Hermanos O Trabajo propio" required />
           <label>Negocio Propio:</label>
           <select name="Negocio Propio" required>
             <option value="">Seleccione</option>
@@ -546,25 +530,24 @@
             <option value="No">No</option>
           </select>
           <label>Giro de la Empresa o Negocio:</label>
-          <input type="text" name="Giro Empresa" required />
+          <input type="text" name="Giro Empresa" placeholder="Ejemplo: La empresa o negocio se dedica a Construccion" required />
         </div>
 
         <!-- PASO 9 -->
         <div class="step">
           <label>Dirección de la Empresa / Negocio:</label>
-          <input type="text" name="Dirección Empresa" required />
+          <input type="text" name="Dirección Empresa" placeholder="Ejemplo: La empresa o negocio se ubica en Utila calle principal,ferreteia 2 hermanos" required />
           <label>Cargo:</label>
-          <input type="text" name="Cargo" required />
-          <label>Departamento / Sección en que labora:</label>
-          <input type="text" name="Departamento" required />
+          <input type="text" name="Cargo"  placeholder="Ejemplo: Mi cargo es vendedor ect..."required />
+        
         </div>
 
         <!-- PASO 10 -->
         <div class="step">
           <label>Antigüedad Laboral en años:</label>
-          <input type="text" name="Antigüedad" required />
+          <input type="text" name="Antigüedad" placeholder="Ejemplo: 1 año" required />
           <label>Nombre y Cargo Jefe Inmediato:</label>
-          <input type="text" name="Jefe Inmediato" required />
+          <input type="text" name="Jefe Inmediato" placeholder="Ejemplo: Juan Perez" required />
           <label>Salario:</label>
           <div class="currency-input">
             <input
@@ -573,14 +556,14 @@
               required
               min="0"
               step="0.01"
-              placeholder="0.00"
+              placeholder="Ejemplo: 5,000"
             />
           </div>
         </div>
 
         <!-- PASO 11 -->
         <div class="step">
-          <label>Ubicación del Trabajo:</label>
+          <label>Ubicación del Trabajo: (Favor seleccionar bien la ubicacion para realizar un croquis )</label>
           <small>Haz clic en el mapa para marcar tu lugar de trabajo</small>
           <div id="mapTrabajo"></div>
           <input type="hidden" name="Ubicación Trabajo" id="trabajoCoords" />
@@ -592,7 +575,7 @@
           <input
             type="text"
             name="Ref Persona 1 Nombre"
-            placeholder="Nombre"
+            placeholder="Nombre del amigo o familiar"
             required
           />
           <input
@@ -608,7 +591,7 @@
           <input
             type="text"
             name="Ref Persona 2 Nombre"
-            placeholder="Nombre"
+           placeholder="Nombre del amigo o familiar"
             required
           />
           <input
@@ -628,13 +611,13 @@
           <input
             type="text"
             name="Ref Familiar 1 Nombre"
-            placeholder="Nombre"
+            placeholder="Nombre del familiar"
             required
           />
           <input
             type="text"
             name="Ref Familiar 1 Parentesco"
-            placeholder="Parentesco"
+            placeholder="Parentesco  Ejemplo: Hermano, Primo"
             required
           />
           <input
@@ -650,13 +633,13 @@
           <input
             type="text"
             name="Ref Familiar 2 Nombre"
-            placeholder="Nombre"
+            placeholder="Nombre del familiar"
             required
           />
           <input
             type="text"
             name="Ref Familiar 2 Parentesco"
-            placeholder="Parentesco"
+            placeholder="Parentesco  Ejemplo: Hermano, Primo"
             required
           />
           <input
@@ -758,57 +741,102 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
 
-      // MAPA DOMICILIO - Google Maps
+
+      // MAPA DOMICILIO - Google Maps con geolocalización
       let map, markerDomicilio;
       function initMapDomicilio() {
+        // Intentar obtener la ubicación del usuario
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              crearMapaDomicilio(userLocation);
+            },
+            function () {
+              // Si falla, usar centro por defecto
+              crearMapaDomicilio({ lat: 16.3, lng: -86.55 });
+            }
+          );
+        } else {
+          crearMapaDomicilio({ lat: 16.3, lng: -86.55 });
+        }
+      }
+
+      function crearMapaDomicilio(center) {
         map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 16.3, lng: -86.55 },
+          center: center,
           zoom: 12,
           mapTypeId: "satellite",
           zoomControl: true,
           scrollwheel: true,
           gestureHandling: "auto"
         });
+        // Colocar marcador inicial
+        markerDomicilio = new google.maps.Marker({
+          position: center,
+          map: map,
+          draggable: true,
+        });
+        document.getElementById("domicilioCoords").value = center.lat + "," + center.lng;
+        markerDomicilio.addListener("dragend", function (evt) {
+          document.getElementById("domicilioCoords").value =
+            evt.latLng.lat() + "," + evt.latLng.lng();
+        });
         map.addListener("click", function (e) {
-          if (markerDomicilio) markerDomicilio.setMap(null);
-          markerDomicilio = new google.maps.Marker({
-            position: e.latLng,
-            map: map,
-            draggable: true,
-          });
+          markerDomicilio.setPosition(e.latLng);
           document.getElementById("domicilioCoords").value =
             e.latLng.lat() + "," + e.latLng.lng();
-          markerDomicilio.addListener("dragend", function (evt) {
-            document.getElementById("domicilioCoords").value =
-              evt.latLng.lat() + "," + evt.latLng.lng();
-          });
         });
       }
 
-      // MAPA TRABAJO - Google Maps
+      // MAPA TRABAJO - Google Maps con geolocalización
       let mapTrabajo, markerTrabajo;
       function initMapTrabajo() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              crearMapaTrabajo(userLocation);
+            },
+            function () {
+              crearMapaTrabajo({ lat: 16.3, lng: -86.55 });
+            }
+          );
+        } else {
+          crearMapaTrabajo({ lat: 16.3, lng: -86.55 });
+        }
+      }
+
+      function crearMapaTrabajo(center) {
         mapTrabajo = new google.maps.Map(document.getElementById("mapTrabajo"), {
-          center: { lat: 16.3, lng: -86.55 },
+          center: center,
           zoom: 12,
           mapTypeId: "satellite",
           zoomControl: true,
           scrollwheel: true,
           gestureHandling: "auto"
         });
+        // Colocar marcador inicial
+        markerTrabajo = new google.maps.Marker({
+          position: center,
+          map: mapTrabajo,
+          draggable: true,
+        });
+        document.getElementById("trabajoCoords").value = center.lat + "," + center.lng;
+        markerTrabajo.addListener("dragend", function (evt) {
+          document.getElementById("trabajoCoords").value =
+            evt.latLng.lat() + "," + evt.latLng.lng();
+        });
         mapTrabajo.addListener("click", function (e) {
-          if (markerTrabajo) markerTrabajo.setMap(null);
-          markerTrabajo = new google.maps.Marker({
-            position: e.latLng,
-            map: mapTrabajo,
-            draggable: true,
-          });
+          markerTrabajo.setPosition(e.latLng);
           document.getElementById("trabajoCoords").value =
             e.latLng.lat() + "," + e.latLng.lng();
-          markerTrabajo.addListener("dragend", function (evt) {
-            document.getElementById("trabajoCoords").value =
-              evt.latLng.lat() + "," + evt.latLng.lng();
-          });
         });
       }
 
@@ -833,7 +861,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let progress = ((n + 1) / steps.length) * 100;
         progressBar.style.width = progress + "%";
 
-        nextBtn.innerText = n === steps.length - 1 ? "Enviar" : "Siguiente";
+        nextBtn.innerText = n === steps.length - 1 ? "Enviar Solicitud" : "Siguiente";
       }
 
       function nextPrev(n) {
@@ -953,7 +981,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((resp) => {
   localStorage.removeItem('formData');
         loadingOverlay.querySelector(".loading-text").textContent =
-          "Datos enviados correctamente. El asesor se contactará pronto con su persona";
+          "Datos enviados correctamente. El asesor se contactará pronto con Used. Gracias.";
         setTimeout(() => {
           localStorage.removeItem('currentStep');
           window.location.reload();
@@ -992,7 +1020,6 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
   </body>
 </html>
-
 
 
 
