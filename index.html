@@ -871,10 +871,22 @@ document.addEventListener("DOMContentLoaded", () => {
         steps.forEach((step) => step.classList.remove("active"));
         steps[n].classList.add("active");
 
-        if (steps[n].querySelector("#map"))
-          setTimeout(() => map.invalidateSize(), 200);
-        if (steps[n].querySelector("#mapTrabajo"))
-          setTimeout(() => mapTrabajo.invalidateSize(), 200);
+        // Inicializar mapa de domicilio si el paso contiene el mapa
+        if (steps[n].querySelector("#map")) {
+          setTimeout(() => {
+            if (typeof google !== "undefined" && google.maps) {
+              initMapDomicilio();
+            }
+          }, 200);
+        }
+        // Inicializar mapa de trabajo si el paso contiene el mapa
+        if (steps[n].querySelector("#mapTrabajo")) {
+          setTimeout(() => {
+            if (typeof google !== "undefined" && google.maps) {
+              initMapTrabajo();
+            }
+          }, 200);
+        }
 
         prevBtn.style.display = n === 0 ? "none" : "block";
 
@@ -977,46 +989,114 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
    
-  function enviarForm() {
+  async function enviarForm() {
     loadingOverlay.style.display = "flex";
     loadingOverlay.style.opacity = "1";
-    loadingOverlay.querySelector(".loading-text").textContent =
-      "Enviando datos...";
+    loadingOverlay.querySelector(".loading-text").textContent = "Enviando datos...";
 
     let form = document.getElementById("creditoForm");
     let data = new FormData(form);
-    let queryString = new URLSearchParams(data);
-
-    // ⬇️ Capturar parámetros de la URL (ejemplo: ?usuario=2113)
+    // Mapeo de nombres del formulario a los nombres de la tabla
+    const fieldMap = {
+      "Nombre": "Nombre",
+      "Identidad": "No. de Identidad",
+      "Nacionalidad": "Nacionalidad",
+      "Fecha de Nacimiento": "Fecha de Nacimiento",
+      "Edad": "Edad",
+      "Dependientes": "No. de Dependientes",
+      "Estado Civil": "Estado Civil",
+      "Profesión": "Profesión u Oficio",
+      "Ocupación": "Ocupación",
+      "Correo": "Correo Electrónico",
+      "Domicilio": "Domicilio",
+      "Tipo Vivienda": "Tipo de Vivienda",
+      "Tiempo Residencia": "Tiempo de Residencia",
+      "Teléfono Domicilio": "Teléfono de Domicilio",
+      "Celular": "Celular",
+      "Ubicación Domicilio": "Ubicación del Domicilio",
+      "Conyuge Nombre": "Nombre del Cónyuge",
+      "Conyuge Identidad": "No. de Identidad del Cónyuge",
+      "Conyuge Trabajo": "Lugar de Trabajo del Cónyuge",
+      "Conyuge Cargo": "Cargo del Cónyuge",
+      "Conyuge Teléfono": "Teléfono de Trabajo del Cónyuge",
+      "Empresa": "Nombre de la Empresa",
+      "Negocio Propio": "Negocio Propio",
+      "Giro Empresa": "Giro de la Empresa o Negocio",
+      "Dirección Empresa": "Dirección de la Empresa / Negocio",
+      "Cargo": "Cargo",
+      "Departamento": "Departamento / Sección",
+      "Antigüedad": "Antigüedad Laboral",
+      "Jefe Inmediato": "Nombre y Cargo Jefe Inmediato",
+      "Salario": "Salario",
+      "Ubicación Trabajo": "Ubicación del Trabajo",
+      "Ref Persona 1 Nombre": "Ref Persona 1 Nombre",
+      "Ref Persona 1 Tel Casa": "Ref Persona 1 Tel Casa",
+      "Ref Persona 1 Tel Trabajo": "Ref Persona 1 Tel Trabajo",
+      "Ref Persona 2 Nombre": "Ref Persona 2 Nombre",
+      "Ref Persona 2 Tel Casa": "Ref Persona 2 Tel Casa",
+      "Ref Persona 2 Tel Trabajo": "Ref Persona 2 Tel Trabajo",
+      "Ref Familiar 1 Nombre": "Ref Familiar 1 Nombre",
+      "Ref Familiar 1 Parentesco": "Ref Familiar 1 Parentesco",
+      "Ref Familiar 1 Tel Casa": "Ref Familiar 1 Tel Casa",
+      "Ref Familiar 1 Tel Trabajo": "Ref Familiar 1 Tel Trabajo",
+      "Ref Familiar 2 Nombre": "Ref Familiar 2 Nombre",
+      "Ref Familiar 2 Parentesco": "Ref Familiar 2 Parentesco",
+      "Ref Familiar 2 Tel Casa": "Ref Familiar 2 Tel Casa",
+      "Ref Familiar 2 Tel Trabajo": "Ref Familiar 2 Tel Trabajo"
+      // "usuario" y "STATUS" se agregan desde la URL o lógica extra
+    };
+    let body = {};
+    for (let [key, value] of data.entries()) {
+      if (key === "Jefe Inmediato") continue; // No enviar campo si no existe en Supabase
+      if (value !== null && value !== undefined && String(value).trim() !== "") {
+        const mappedKey = fieldMap[key] || key;
+        body[mappedKey] = value;
+      }
+    }
+    // Capturar parámetros de la URL (ejemplo: ?usuario=2113)
     let urlParams = new URLSearchParams(window.location.search);
     for (let [key, value] of urlParams.entries()) {
-      queryString.append(key, value); // se agregan al envío
+      if (value !== null && value !== undefined && String(value).trim() !== "") {
+        body[key] = value;
+      }
     }
 
-    let scriptURL =
-      "https://script.google.com/macros/s/AKfycbxd8D96neNYkA5T1QRhwOSYNvExXjwGH8i1kBArhV1RwICSJZGdvQbkkerJfrt-_Nk3/exec";
-
-    fetch(`${scriptURL}?${queryString.toString()}`)
-      .then((response) => response.text())
-      .then((resp) => {
-  localStorage.removeItem('formData');
-        loadingOverlay.querySelector(".loading-text").textContent =
-          "Datos enviados correctamente. El asesor se contactará pronto con Used. Gracias.";
-        setTimeout(() => {
-          localStorage.removeItem('currentStep');
-          window.location.reload();
-        }, 1500);
-      })
-      .catch((err) => {
-  localStorage.removeItem('formData');
-        loadingOverlay.querySelector(
-          ".loading-text"
-        ).textContent = `Error: ${err}`;
-        setTimeout(() => {
-          localStorage.removeItem('currentStep');
-          window.location.reload();
-        }, 1500);
+    try {
+      const resp = await fetch("https://ydowdpcladycccauvmob.supabase.co/rest/v1/datos_personales", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlkb3dkcGNsYWR5Y2NjYXV2bW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2NTgxMTksImV4cCI6MjA3NDIzNDExOX0.W9FLueZVyuPXmEg7cx4qs4qWf8QspvdeO9Q9k97UALM",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlkb3dkcGNsYWR5Y2NjYXV2bW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2NTgxMTksImV4cCI6MjA3NDIzNDExOX0.W9FLueZVyuPXmEg7cx4qs4qWf8QspvdeO9Q9k97UALM"
+        },
+        body: JSON.stringify([body])
       });
+      let errorText = "";
+      if (!resp.ok) {
+        try {
+          const errorJson = await resp.json();
+          errorText = JSON.stringify(errorJson);
+        } catch(e) {
+          errorText = await resp.text();
+        }
+        console.error("Error Supabase:", errorText);
+        loadingOverlay.querySelector(".loading-text").textContent = `Error: ${errorText}`;
+        // No recargar la página, solo mostrar el error
+        return;
+      }
+      localStorage.removeItem('formData');
+      loadingOverlay.querySelector(".loading-text").textContent = "Datos enviados correctamente. El asesor se contactará pronto con usted. Gracias.";
+      setTimeout(() => {
+        localStorage.removeItem('currentStep');
+        window.location.reload();
+      }, 1500);
+    } catch (err) {
+      console.error("Error JS:", err);
+      localStorage.removeItem('formData');
+      loadingOverlay.querySelector(".loading-text").textContent = `Error: ${err.message}`;
+      // No recargar la página, solo mostrar el error
+      return;
+    }
   }
 
 
@@ -1040,6 +1120,5 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
   </body>
 </html>
-
 
 
